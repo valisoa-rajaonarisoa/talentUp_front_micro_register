@@ -19,6 +19,7 @@ export default function SelectForm({ label, options, value, onChange }: Props) {
       onChange={(event, newValue) => {
         if (onChange) {
           onChange(newValue); // Appeler la fonction onChange avec la nouvelle valeur
+          console.log(typeof(event))
         }
       }}
       renderInput={(params) => <TextField {...params} label={label} />}

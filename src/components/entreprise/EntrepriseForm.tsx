@@ -2,26 +2,24 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
-    styled,
     TextField,
   } from "@mui/material";
   import SelectForm from "../SelectForm";
-  import CloudUploadIcon from "@mui/icons-material/CloudUpload";
   import { ActivitySecteur } from "../../data/ActivitySecteur";
   import { Collaborateur } from "../../data/Collaborateur";
   import { useForm, Controller } from "react-hook-form";
   
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
+  // const VisuallyHiddenInput = styled("input")({
+  //   clip: "rect(0 0 0 0)",
+  //   clipPath: "inset(50%)",
+  //   height: 1,
+  //   overflow: "hidden",
+  //   position: "absolute",
+  //   bottom: 0,
+  //   left: 0,
+  //   whiteSpace: "nowrap",
+  //   width: 1,
+  // });
   
   type FormData = {
     companyName: string;

@@ -15,6 +15,7 @@ export default function Navigation() {
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
+        console.log(typeof(event))
       }}
     >
       <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
