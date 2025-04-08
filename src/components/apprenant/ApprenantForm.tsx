@@ -12,8 +12,13 @@ import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import PhoneInput from "../PhoneInput";
 import { FormDataApprenant } from "../../typescript/module";
+type Props={
+  token:string
+}
 
-const ApprenantForm = () => {
+const ApprenantForm = ({token}:Props) => {
+
+  console.log(token)
   const {
     register,
     control,

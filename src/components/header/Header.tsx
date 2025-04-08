@@ -1,44 +1,20 @@
 import { Link } from "react-router-dom";
-import { useKeycloak } from "../../context/KeycloakContext";
+
 import User from "./User";
 
-type Props = {};
+type Props = {
+  userInfo: {
+    email: string;
+    username: string;
+    name: string;
+    id: string | undefined;
+  };
+  handleLogout: () => void;
+};
 
-const Header: React.FC<Props> = ({}) => {
+const Header: React.FC<Props> = ({ userInfo, handleLogout }: Props) => {
   //   **********************keycloak
-  const { keycloak } = useKeycloak();
 
-
-  console.log(keycloak?.token)
-  let userInfo = {
-    email: "",
-    username: "",
-    name: "",
-    id: "" as string | undefined,
-  };
-  if (keycloak) {
-    //  *************recuperation user ***
-
-    userInfo.email = keycloak.idTokenParsed?.email;
-    userInfo.username = keycloak.idTokenParsed?.preferred_username;
-    userInfo.id = keycloak.idTokenParsed?.sub;
-
-    if (userInfo.email) {
-      userInfo.name = userInfo.email
-        .split("@")[0]
-        .substring(0, 2)
-        .toUpperCase();
-    }
-  }
-
-  //   ********************keycloak
-  const handleLogout = () => {
-    if (keycloak) {
-      keycloak.logout({
-        redirectUri: import.meta.env.VITE_SERVICE_LOGOUT,
-      });
-    }
-  };
   return (
     <header className="fixed top-0 left-0 w-full bg-blue-400 text-white z-50 shadow-md">
       {/* Conteneur principal */}

@@ -16,7 +16,7 @@ export type FormDataEntreprise = {
   numero_siret: string;
   secteur_activite: string;
   collaborateurs: string;
-  addresse: string;
+  adresse: string;
   telephone: string;
   site_web: string;
   linkedin: string;

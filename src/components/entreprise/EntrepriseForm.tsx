@@ -7,8 +7,13 @@ import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import PhoneInput from "../PhoneInput";
 import { FormDataEntreprise } from "../../typescript/module";
+import { createEntreprise } from "../../apis/EntrepriseApis";
 
-const EntrepriseForm = () => {
+type Props = {
+  token: string;
+};
+
+const EntrepriseForm = ({ token }: Props) => {
   const {
     register,
     control,
@@ -20,7 +25,7 @@ const EntrepriseForm = () => {
       numero_siret: "",
       secteur_activite: "",
       collaborateurs: "",
-      addresse: "",
+      adresse: "",
       telephone: "",
       site_web: "",
       linkedin: "",
@@ -34,10 +39,22 @@ const EntrepriseForm = () => {
   // ************************constante pour recuperer le num
   const [countryPhone, setCountryPhone] = useState("+33");
 
-  const onSubmit = (data: FormDataEntreprise) => {
-    data.telephone = countryPhone + data.telephone;
+  //const create
+  const onSubmit = async (entreprise: FormDataEntreprise) => {
 
-    console.log("Données du formulaire :", data);
+    try {
+      entreprise.telephone = countryPhone + " " + entreprise.telephone;
+
+      const create = await createEntreprise(token, entreprise);
+
+      if(create.status==201){
+        window.location.reload() //on actualise la page 
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Une erreur est survenue");
+      throw new Error("Erreur lors de l'inscription entreprise");
+    }
   };
 
   return (
@@ -154,9 +171,9 @@ const EntrepriseForm = () => {
             multiline
             maxRows={4}
             sx={{ width: "100%" }}
-            {...register("addresse", { required: "Ce champ est obligatoire" })}
-            error={!!errors.addresse}
-            helperText={errors.addresse?.message}
+            {...register("adresse", { required: "Ce champ est obligatoire" })}
+            error={!!errors.adresse}
+            helperText={errors.adresse?.message}
           />
         </div>
         {/* Téléphone et site web */}

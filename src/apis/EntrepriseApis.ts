@@ -1,8 +1,15 @@
 import { FormDataEntreprise } from "../typescript/module";
 
-const URL_API=import.meta.env.VITE_API_BACK;
+import axios from "axios";
+const URL_API = import.meta.env.VITE_API_BACK;
 
-
-export const createEntreprise=(token:string, entreprise:FormDataEntreprise)=>{
-    console.log(URL_API)
-}
+export const createEntreprise = (
+  token: string,
+  entreprise: FormDataEntreprise
+) => {
+  return axios.post(`${URL_API}/talentEntreprise/createEntreprise`, entreprise, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
