@@ -41,3 +41,19 @@ export type FormDataApprenant = {
   portfolio: string;
   objectives: string[];
 };
+
+
+
+export type KeyType =
+| "nom_entreprise"
+| "numero_siret"
+| "secteur_activite"
+| "collaborateurs"
+| "adresse"
+| "telephone"
+| "site_web"
+| "linkedin"
+| "nom_contact"
+| "fonction_contact"
+| "description_entreprise"
+| "logo";

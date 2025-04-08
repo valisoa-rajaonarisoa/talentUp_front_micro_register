@@ -6,12 +6,13 @@ import { useForm, Controller } from "react-hook-form";
 
 import { useState } from "react";
 import PhoneInput from "../PhoneInput";
-import { FormDataEntreprise } from "../../typescript/module";
+import { FormDataEntreprise, KeyType } from "../../typescript/module";
 import { createEntreprise } from "../../apis/EntrepriseApis";
 
 type Props = {
   token: string;
 };
+
 
 const EntrepriseForm = ({ token }: Props) => {
   const {
@@ -36,27 +37,60 @@ const EntrepriseForm = ({ token }: Props) => {
     },
   });
 
+  // ***********************errors au bdd
+
+  const [registerErrorBdd, setRegisterErrorBdd] = useState<any[]>([]);
+
   // ************************constante pour recuperer le num
   const [countryPhone, setCountryPhone] = useState("+33");
 
   //const create
   const onSubmit = async (entreprise: FormDataEntreprise) => {
-
     try {
       entreprise.telephone = countryPhone + " " + entreprise.telephone;
 
       const create = await createEntreprise(token, entreprise);
 
-      if(create.status==201){
-        window.location.reload() //on actualise la page 
+      if (create.status == 201) {
+        window.location.reload(); //on actualise la page
       }
-    } catch (error) {
-      console.error(error);
-      alert("Une erreur est survenue");
-      throw new Error("Erreur lors de l'inscription entreprise");
+    } catch (error: any) {
+      if (error.response) {
+        alert("Une erreur est survenue du micro_service dto ");
+
+        setRegisterErrorBdd(error.response.data);
+      } else {
+        console.error(error);
+        alert("Une erreur est survenue ");
+        throw new Error("Erreur lors de l'inscription entreprise");
+      }
     }
   };
 
+  //fonction boolean pour l'err
+  const isErrorKey=(key: KeyType)=>{
+    let error = false;
+    registerErrorBdd.forEach((element) => {
+      if (Object.keys(element)[0] == key) {
+        error = true;
+      }
+    });
+    return error;
+  }
+
+  //afficher l'err
+  const getErrorKey=(key:KeyType)=>{
+    let message = "";
+    registerErrorBdd.forEach((element) => {
+      if (Object.keys(element)[0] == key) {
+        message = element[key];
+      }
+    });
+
+    return message;
+  }
+
+  console.log(registerErrorBdd)
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* **************INFORMATION GÉNÉRALE */}
@@ -79,8 +113,10 @@ const EntrepriseForm = ({ token }: Props) => {
               {...register("nom_entreprise", {
                 required: "Ce champ est obligatoire",
               })}
-              error={!!errors.nom_entreprise}
-              helperText={errors.nom_entreprise?.message}
+              error={!!errors.nom_entreprise || isErrorKey("nom_entreprise")}
+              helperText={
+                errors.nom_entreprise?.message || getErrorKey("nom_entreprise")
+              }
             />
           </div>
           {/* Numéro SIRET */}
@@ -97,8 +133,10 @@ const EntrepriseForm = ({ token }: Props) => {
               {...register("numero_siret", {
                 required: "Ce champ est obligatoire",
               })}
-              error={!!errors.numero_siret}
-              helperText={errors.numero_siret?.message}
+              error={!!errors.numero_siret || isErrorKey("numero_siret")}
+              helperText={
+                errors.numero_siret?.message || getErrorKey("numero_siret")
+              }
             />
           </div>
         </div>
@@ -124,7 +162,7 @@ const EntrepriseForm = ({ token }: Props) => {
             />
             {errors.secteur_activite && (
               <p className="text-red-500 text-sm">
-                {errors.secteur_activite.message}
+                {errors.secteur_activite.message} || {getErrorKey("secteur_activite")}
               </p>
             )}
           </div>
@@ -150,7 +188,7 @@ const EntrepriseForm = ({ token }: Props) => {
             />
             {errors.collaborateurs && (
               <p className="text-red-500 text-sm">
-                {errors.collaborateurs.message}
+                {errors.collaborateurs.message} || {getErrorKey("collaborateurs")}
               </p>
             )}
           </div>
@@ -172,8 +210,8 @@ const EntrepriseForm = ({ token }: Props) => {
             maxRows={4}
             sx={{ width: "100%" }}
             {...register("adresse", { required: "Ce champ est obligatoire" })}
-            error={!!errors.adresse}
-            helperText={errors.adresse?.message}
+            error={!!errors.adresse || isErrorKey("adresse")}
+            helperText={errors.adresse?.message || getErrorKey("adresse")}
           />
         </div>
         {/* Téléphone et site web */}
@@ -184,6 +222,10 @@ const EntrepriseForm = ({ token }: Props) => {
               errors={errors}
               countryPhone={countryPhone}
               setCountryPhone={setCountryPhone}
+
+              getErrorKey={getErrorKey}
+              isErrorKey={isErrorKey}
+
             />
           </div>
           <div className="w-full md:w-[50%]">
@@ -193,6 +235,9 @@ const EntrepriseForm = ({ token }: Props) => {
               variant="outlined"
               className="w-full"
               {...register("site_web")}
+
+              error={isErrorKey("site_web")}
+              helperText={getErrorKey("site_web")}
             />
           </div>
         </div>
@@ -205,6 +250,9 @@ const EntrepriseForm = ({ token }: Props) => {
               variant="outlined"
               className="w-full"
               {...register("linkedin")}
+
+              error={isErrorKey("linkedin")}
+              helperText={getErrorKey("linkedin")}
             />
           </div>
         </div>
@@ -228,8 +276,8 @@ const EntrepriseForm = ({ token }: Props) => {
               {...register("nom_contact", {
                 required: "Ce champ est obligatoire",
               })}
-              error={!!errors.nom_contact}
-              helperText={errors.nom_contact?.message}
+              error={!!errors.nom_contact || isErrorKey("nom_contact")}
+              helperText={errors.nom_contact?.message || getErrorKey("nom_contact")}
             />
           </div>
           <div className="w-full md:w-[50%]">
@@ -245,8 +293,8 @@ const EntrepriseForm = ({ token }: Props) => {
               {...register("fonction_contact", {
                 required: "ce champ est obligatoire",
               })}
-              error={!!errors.fonction_contact}
-              helperText={errors.fonction_contact?.message}
+              error={!!errors.fonction_contact || isErrorKey("fonction_contact")}
+              helperText={errors.fonction_contact?.message || getErrorKey("fonction_contact")}
             />
           </div>
         </div>
@@ -271,8 +319,8 @@ const EntrepriseForm = ({ token }: Props) => {
             {...register("description_entreprise", {
               required: "Ce champ est obligatoire",
             })}
-            error={!!errors.description_entreprise}
-            helperText={errors.description_entreprise?.message}
+            error={!!errors.description_entreprise || isErrorKey("description_entreprise")}
+            helperText={errors.description_entreprise?.message || getErrorKey("description_entreprise")}
           />
         </div>
         {/* Upload du logo */}
@@ -310,7 +358,7 @@ const EntrepriseForm = ({ token }: Props) => {
         </h3>
         <div className="flex flex-col">
           <FormControlLabel
-            control={<Checkbox />}
+            control={<Checkbox required/>}
             label={
               <h3>
                 J'accepte{" "}
@@ -322,7 +370,7 @@ const EntrepriseForm = ({ token }: Props) => {
             }
           />
           <FormControlLabel
-            control={<Checkbox />}
+            control={<Checkbox required/>}
             label={
               <h3>
                 Je consens au traitement de mes données conformément à la{" "}
