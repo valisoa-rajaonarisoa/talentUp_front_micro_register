@@ -6,37 +6,12 @@ import {
   TextField,
 } from "@mui/material";
 import SelectForm from "../SelectForm";
-// import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 import { ActivitySecteur } from "../../data/ActivitySecteur";
 import { useForm, Controller } from "react-hook-form";
-
-// const VisuallyHiddenInput = styled("input")({
-//   clip: "rect(0 0 0 0)",
-//   clipPath: "inset(50%)",
-//   height: 1,
-//   overflow: "hidden",
-//   position: "absolute",
-//   bottom: 0,
-//   left: 0,
-//   whiteSpace: "nowrap",
-//   width: 1,
-// });
-
-type FormData = {
-  lastName: string;
-  firstName: string;
-  dateOfBirth: string;
-  phone: string;
-  city: string;
-  educationLevel: string;
-  specialization: string;
-  cv: FileList | null;
-  photo: FileList | null;
-  presentation: string;
-  linkedin: string;
-  portfolio: string;
-  objectives: string[];
-};
+import { useState } from "react";
+import PhoneInput from "../PhoneInput";
+import { FormDataApprenant } from "../../typescript/module";
 
 const ApprenantForm = () => {
   const {
@@ -44,15 +19,15 @@ const ApprenantForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormDataApprenant>({
     defaultValues: {
-      lastName: "",
-      firstName: "",
-      dateOfBirth: "",
-      phone: "",
-      city: "",
-      educationLevel: "",
-      specialization: "",
+      nom: "",
+      prenom: "",
+      date_naissance: "",
+      telephone: "",
+      ville: "",
+      niveau_etude: "",
+      specialite: "",
       cv: null,
       photo: null,
       presentation: "",
@@ -62,7 +37,11 @@ const ApprenantForm = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
+  const [countryPhone, setCountryPhone] = useState("+33");
+
+  const onSubmit = (data: FormDataApprenant) => {
+    data.telephone = countryPhone + data.telephone;
+
     console.log("Données du formulaire :", data);
   };
 
@@ -86,21 +65,21 @@ const ApprenantForm = () => {
               }
               variant="outlined"
               className="w-full"
-              {...register("lastName", {
+              {...register("nom", {
                 required: "Ce champ est obligatoire",
               })}
-              error={!!errors.lastName}
-              helperText={errors.lastName?.message}
+              error={!!errors.nom}
+              helperText={errors.nom?.message}
             />
           </div>
 
           <div className="w-full md:w-[50%]">
             <TextField
-              id="firstName"
+              id="prenom"
               label={<h3>Prénom(s)</h3>}
               variant="outlined"
               className="w-full"
-              {...register("firstName")}
+              {...register("prenom")}
             />
           </div>
         </div>
@@ -117,30 +96,25 @@ const ApprenantForm = () => {
             type="date"
             id="date-of-birth"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            {...register("dateOfBirth", {
+            {...register("date_naissance", {
               required: "Ce champ est obligatoire",
             })}
           />
-          {errors.dateOfBirth && (
-            <p className="text-red-500 text-sm">{errors.dateOfBirth.message}</p>
+          {errors.date_naissance && (
+            <p className="text-red-500 text-sm">
+              {errors.date_naissance.message}
+            </p>
           )}
         </div>
 
         {/* *********************Téléphone et Ville */}
         <div className="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row mb-4">
           <div className="w-full md:w-[50%]">
-            <TextField
-              id="phone"
-              label={
-                <h3>
-                  Téléphone <span className="text-red-400">*</span>
-                </h3>
-              }
-              variant="outlined"
-              className="w-full"
-              {...register("phone", { required: "Ce champ est obligatoire" })}
-              error={!!errors.phone}
-              helperText={errors.phone?.message}
+            <PhoneInput
+              register={register as any}
+              errors={errors}
+              countryPhone={countryPhone}
+              setCountryPhone={setCountryPhone}
             />
           </div>
 
@@ -154,9 +128,9 @@ const ApprenantForm = () => {
               }
               variant="outlined"
               className="w-full"
-              {...register("city", { required: "Ce champ est obligatoire" })}
-              error={!!errors.city}
-              helperText={errors.city?.message}
+              {...register("ville", { required: "Ce champ est obligatoire" })}
+              error={!!errors.ville}
+              helperText={errors.ville?.message}
             />
           </div>
         </div>
@@ -173,7 +147,7 @@ const ApprenantForm = () => {
           {/* Niveau d'études */}
           <div className="w-full md:w-[50%]">
             <Controller
-              name="educationLevel"
+              name="niveau_etude"
               control={control}
               rules={{ required: "Ce champ est obligatoire" }}
               render={({ field }) => (
@@ -189,9 +163,9 @@ const ApprenantForm = () => {
                 />
               )}
             />
-            {errors.educationLevel && (
+            {errors.niveau_etude && (
               <p className="text-red-500 text-sm">
-                {errors.educationLevel.message}
+                {errors.niveau_etude.message}
               </p>
             )}
           </div>
@@ -199,7 +173,7 @@ const ApprenantForm = () => {
           {/* Spécialité / Domaine */}
           <div className="w-full md:w-[50%]">
             <TextField
-              id="specialization"
+              id="specialite"
               label={
                 <h3>
                   Spécialité / Domaine <span className="text-red-400">*</span>
@@ -207,11 +181,11 @@ const ApprenantForm = () => {
               }
               variant="outlined"
               className="w-full"
-              {...register("specialization", {
+              {...register("specialite", {
                 required: "Ce champ est obligatoire",
               })}
-              error={!!errors.specialization}
-              helperText={errors.specialization?.message}
+              error={!!errors.specialite}
+              helperText={errors.specialite?.message}
             />
           </div>
         </div>

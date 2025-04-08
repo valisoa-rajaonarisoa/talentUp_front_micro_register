@@ -8,6 +8,8 @@ const Header: React.FC<Props> = ({}) => {
   //   **********************keycloak
   const { keycloak } = useKeycloak();
 
+
+  console.log(keycloak?.token)
   let userInfo = {
     email: "",
     username: "",
