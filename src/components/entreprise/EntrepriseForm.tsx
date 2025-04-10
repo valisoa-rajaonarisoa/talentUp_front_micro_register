@@ -55,9 +55,10 @@ const EntrepriseForm = ({ token }: Props) => {
         window.location.reload(); //on actualise la page
       }
     } catch (error: any) {
-      if (error.response) {
-        alert("Une erreur est survenue du micro_service dto ");
 
+      ///on regarde si le micro_service envoye un err 
+      if (error.response) {
+       
         setRegisterErrorBdd(error.response.data);
       } else {
         console.error(error);
