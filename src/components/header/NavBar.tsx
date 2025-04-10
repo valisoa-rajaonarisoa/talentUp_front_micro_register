@@ -122,7 +122,7 @@ const NavBar = ({ handleLogout }: Props) => {
         {/* Right Side Controls */}
         <div className="flex items-center gap-2">
           {/* Bouton de déconnexion (grand écran) */}
-          <Button variant="outlined" color="error" onClick={() => handleLogout}>
+          <Button variant="outlined" color="error" onClick={() => handleLogout()}>
             Deconnexion
           </Button>
 
@@ -205,7 +205,7 @@ const NavBar = ({ handleLogout }: Props) => {
           </nav>
 
           {/* Logout Button (mobile) */}
-          <Button variant="outlined" color="error" onClick={() => handleLogout}>
+          <Button variant="outlined" color="error" onClick={() => handleLogout()}>
             Deconnexion
           </Button>
         </div>
