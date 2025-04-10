@@ -57,3 +57,23 @@ export type KeyType =
 | "fonction_contact"
 | "description_entreprise"
 | "logo";
+
+
+
+
+
+
+export type PagesLinkTypes =
+  | {
+      path: string;
+      name: string;
+      children?: undefined;
+    }
+  | {
+      name: string;
+      children: {
+        path: string;
+        name: string;
+      }[];
+      path?: undefined;
+    };

@@ -4,8 +4,9 @@ import { useState } from "react";
 import EntrepriseForm from "./components/entreprise/EntrepriseForm";
 import ButtonChoiceAccount from "./components/head/ButtonChoiceAccount";
 import ApprenantForm from "./components/apprenant/ApprenantForm";
-import Header from "./components/header/Header";
+
 import { useKeycloak } from "./context/KeycloakContext";
+import NavBar from "./components/header/NavBar";
 
 const App = ({}: Props) => {
   // **************************STATE*******
@@ -47,7 +48,7 @@ const App = ({}: Props) => {
   return (
     <div className="bg-red-100 w-full bg-white">
       {/* ****header  */}
-      <Header userInfo={userInfo} handleLogout={handleLogout}/>
+      <NavBar  handleLogout={handleLogout}/>
 
       <div className="bg-red-100 w-full bg-white py-16 mt-10  px-2 md:px-32 xl:px-62">
         <div className="bg-white shadow-lg rounded border border-gray-200 w-full p-1 md:p-6">
