@@ -157,11 +157,6 @@ const ApprenantForm = ({token}:Props) => {
               rules={{ required: "Ce champ est obligatoire" }}
               render={({ field }) => (
                 <SelectForm
-                  label={
-                    <h3>
-                      Niveau d'études <span className="text-red-400">*</span>
-                    </h3>
-                  }
                   options={ActivitySecteur}
                   value={field.value}
                   onChange={(newValue) => field.onChange(newValue)}

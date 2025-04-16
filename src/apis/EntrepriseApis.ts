@@ -1,11 +1,28 @@
-import { FormDataEntreprise } from "../typescript/module";
+import { CreateEntrepriseType} from "../typescript/module";
 
 import axios from "axios";
 const URL_API = import.meta.env.VITE_API_BACK;
 
-export const createEntreprise = (
+
+
+
+
+
+// **************************sirene 
+export const isValideSireneApi= (
   token: string,
-  entreprise: FormDataEntreprise
+  sirene_entreprise:number | string
+) => {
+  return axios.post(`${URL_API}/talentEntreprise/sirene/${sirene_entreprise}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const createEntrepriseApi = (
+  token: string,
+  entreprise: CreateEntrepriseType
 ) => {
   return axios.post(`${URL_API}/talentEntreprise/createEntreprise`, entreprise, {
     headers: {
@@ -13,3 +30,4 @@ export const createEntreprise = (
     },
   });
 };
+
