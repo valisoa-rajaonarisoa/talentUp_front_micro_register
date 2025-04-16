@@ -99,12 +99,12 @@ const CoordonneInfo = ({
 
       const createEntreprise = await createEntrepriseApi(token, new_entreprise);
 
-      if (createEntreprise.status == 201) {
-        //actualiser la page
-        window.location.reload;
-
-        //suppimer le cookies
+      if (createEntreprise) {
+        //suppimer les cookies
         Cookies.remove("entrepriseInfo");
+
+        //actualiser la page
+        window.location.reload();
       }
     } catch (error: any) {
       console.log(error);
